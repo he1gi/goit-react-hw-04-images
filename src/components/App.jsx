@@ -1,16 +1,61 @@
-export const App = () => {
+import { useState, useEffect, useRef } from 'react';
+import { ToastContainer } from 'react-toastify';
+
+import Searchbar from './Searchbar';
+import ImageGallery from './ImageGallery';
+import Button from './Button';
+import Loader from './Loader';
+
+import fetchImages from './fetchImages';
+import { toast } from 'react-toastify';
+
+export default function App() {
+  const [inputValue, setInputValue] = useState('');
+  const [imgs, setImgs] = useState([]);
+  const [page, setPage] = useState(1);
+  const [isLoading, setIsLoading] = useState(false);
+
+  const str = useRef('');
+
+  useEffect(() => {
+    const fetchFn = () => {
+      if (str.current === inputValue) {
+        return;
+      }
+      setIsLoading(true);
+
+      fetchImages(inputValue, page)
+        .then(r => {
+          setImgs(pverImgs => [...pverImgs, ...r]);
+          if (r.length === 0) {
+            toast.error('Упс... по запросу ничего не найдено', {
+              autoClose: 1000,
+            });
+          }
+        })
+        .finally(() => setIsLoading(false));
+    };
+
+    fetchFn();
+  }, [inputValue, page]);
+
+  const handleFormSubmit = value => {
+    setInputValue(value);
+    setImgs([]);
+    setPage(1);
+  };
+
+  const loadMore = () => {
+    setPage(prevPage => prevPage + 1);
+  };
+
   return (
-    <div
-      style={{
-        height: '100vh',
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        fontSize: 40,
-        color: '#010101'
-      }}
-    >
-      React homework template
-    </div>
+    <>
+      <ToastContainer />
+      <Searchbar onSubmit={handleFormSubmit} />
+      <ImageGallery imgs={imgs} />
+      {imgs.length !== 0 && <Button onClick={loadMore} />}
+      {isLoading && <Loader />}
+    </>
   );
-};
+}
