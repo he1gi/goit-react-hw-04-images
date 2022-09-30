@@ -16,7 +16,9 @@ export default function Searchbar({ onSubmit }) {
     e.preventDefault();
 
     if (inputValue.trim() === '') {
-      return toast.error('Введите название');
+      return toast.error('Введите название', {
+        autoClose: 1000,
+      });
     }
     onSubmit(inputValue);
   };
