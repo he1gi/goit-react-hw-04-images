@@ -1,13 +1,12 @@
 import { useState, useEffect, useRef } from 'react';
-import { ToastContainer } from 'react-toastify';
+import { ToastContainer, toast } from 'react-toastify';
 
 import Searchbar from './Searchbar';
 import ImageGallery from './ImageGallery';
 import Button from './Button';
 import Loader from './Loader';
 
-import fetchImages from './fetchImages';
-import { toast } from 'react-toastify';
+import fetchImages from './FetchImages';
 
 export default function App() {
   const [inputValue, setInputValue] = useState('');

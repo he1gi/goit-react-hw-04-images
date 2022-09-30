@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import PropTypes from 'prop-types';
+
 import { toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
 import { FaSearchengin } from 'react-icons/fa';
 
 export default function Searchbar({ onSubmit }) {
