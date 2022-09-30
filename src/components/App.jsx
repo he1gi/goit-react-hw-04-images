@@ -6,7 +6,7 @@ import ImageGallery from './ImageGallery';
 import Button from './Button';
 import Loader from './Loader';
 
-import fetchImages from './FetchImages';
+import fetchImages from './fetchImages';
 
 export default function App() {
   const [inputValue, setInputValue] = useState('');
@@ -36,7 +36,9 @@ export default function App() {
         .catch(e => {
           setError(e.message);
           if (error !== null) {
-            toast.error(`Ошибка ${error}`);
+            toast.error(`Ошибка ${error}`, {
+              autoClose: 1000,
+            });
           }
         })
         .finally(() => setIsLoading(false));
