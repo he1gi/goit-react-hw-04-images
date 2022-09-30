@@ -14,6 +14,7 @@ export default function App() {
   const [imgs, setImgs] = useState([]);
   const [page, setPage] = useState(1);
   const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState(null);
 
   const str = useRef('');
 
@@ -26,18 +27,23 @@ export default function App() {
 
       fetchImages(inputValue, page)
         .then(r => {
-          setImgs(pverImgs => [...pverImgs, ...r]);
+          setImgs(prevImgs => [...prevImgs, ...r]);
           if (r.length === 0) {
             toast.error('Упс... по запросу ничего не найдено', {
               autoClose: 1000,
             });
           }
         })
+        .catch(e => {
+          setError(e.message);
+          if (error !== null) {
+            toast.error(`Ошибка ${error}`);
+          }
+        })
         .finally(() => setIsLoading(false));
     };
-
     fetchFn();
-  }, [inputValue, page]);
+  }, [inputValue, page, error]);
 
   const handleFormSubmit = value => {
     setInputValue(value);
